@@ -2,7 +2,7 @@
 FROM semenovp/tiny-elm:latest as elmBuilder
 
 COPY function/ ./
-RUN elm make ./src/Main.elm --output=elm-main.js
+RUN elm make --optimize ./src/Main.elm --output=elm-main.js
 
 
 FROM --platform=${TARGETPLATFORM:-linux/amd64} openfaas/of-watchdog:0.7.2 as watchdog

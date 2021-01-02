@@ -1,5 +1,5 @@
 port module Main exposing (main)
-
+ 
 import Handler
 import Json.Decode as D
 import Json.Encode as E
@@ -55,7 +55,7 @@ run (Job jobId input) =
     in
     case input of
         F1Input input_ ->
-            go Handler.run input_ F1Output
+            go Handler.handle input_ F1Output
 
 
 
@@ -152,7 +152,5 @@ decoder =
 
 port start : (D.Value -> msg) -> Sub msg
 
-
-port output : E.Value -> Cmd msg
 
 port output : E.Value -> Cmd msg

@@ -1,10 +1,11 @@
 'use strict'
+const { Console } = require("console");
 const { randomBytes } = require("crypto");
 const { Elm } = require("./function/elm-main");
 module.exports = async (event, context) => {
   const result = {
     
-    'status':  await run("f1",JSON.stringify(event.body))
+    'status':  await run("f1",event.body)
   }
 
   return context
@@ -27,6 +28,7 @@ const run = async (functionId, input) => {
         if (v.jobId === jobId) {
           clearTimeout(timeout);
           output.unsubscribe(go);
+          console.log(input);
 
           if (v.status === "ok") {
             resolve({ ok: v.output });

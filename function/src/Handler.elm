@@ -5,26 +5,36 @@ import Json.Encode as E
 
 
 type alias Input =
-    List Int
+    Int
 
 
 type alias Output =
     Int
 
 
-run : Input -> Result String Output
-run input =
-    case input of
-        [] ->
-            Err "to short"
-
-        _ ->
-            Ok <| List.length input
+handle : Input -> Result String Output
+handle input =
+    Ok input
 
 
 decoder : D.Decoder Input
 decoder =
-    D.list D.int
+    let
+        convertToInput : String -> Maybe Input
+        convertToInput str =
+            String.toInt str
+
+        mapResult inputString =
+            case inputString of
+                Just result ->
+                    D.succeed result
+
+                Nothing ->
+                    D.fail "Ich erwarte eine Zahl"
+    in
+    D.string
+        |> D.map convertToInput
+        |> D.andThen mapResult
 
 
 encoder : Output -> E.Value

@@ -12,7 +12,7 @@ type alias Output =
     Int
 
 
-handle : Input -> Result String Output
+handle : Input -> Result {errorMessage:String,errorCode:Int} Output
 handle input =
     Ok input
 
@@ -30,7 +30,7 @@ decoder =
                     D.succeed result
 
                 Nothing ->
-                    D.fail "Ich erwarte eine Zahl"
+                    D.fail "excpected Int"
     in
     D.string
         |> D.map convertToInput

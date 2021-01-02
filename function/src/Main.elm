@@ -1,5 +1,5 @@
 port module Main exposing (main)
- 
+
 import Handler
 import Json.Decode as D
 import Json.Encode as E
@@ -33,7 +33,7 @@ type Job a
 
 
 type alias JobResult =
-    Result ( JobId, String ) (Job Output)
+    Result ( JobId, { errorCode : Int, errorMessage : String } ) (Job Output)
 
 
 type Input
@@ -56,8 +56,6 @@ run (Job jobId input) =
     case input of
         F1Input input_ ->
             go Handler.handle input_ F1Output
-
-
 
 
 decodeInput : String -> D.Decoder Input
@@ -83,6 +81,7 @@ encodeOutput result =
                 [ ( "status", E.string "ok" )
                 , ( "jobId", E.string jobId )
                 , ( "output", outputEncoder output_ )
+                , ( "statusCode", E.int 200 )
                 ]
     in
     case result of
@@ -95,7 +94,8 @@ encodeOutput result =
             E.object
                 [ ( "status", E.string "error" )
                 , ( "jobId", E.string jobId )
-                , ( "msg", E.string error )
+                , ( "msg", E.string error.errorMessage )
+                , ( "statusCode", E.int error.errorCode )
                 ]
 
 
@@ -107,6 +107,7 @@ initiate value =
                 (E.object
                     [ ( "status", E.string "error" )
                     , ( "msg", E.string (D.errorToString e) )
+                    , ( "statusCode", E.int 500 )
                     ]
                 )
 
@@ -118,6 +119,7 @@ initiate value =
                             [ ( "status", E.string "error" )
                             , ( "jobId", E.string jobId )
                             , ( "msg", E.string (D.errorToString e) )
+                            , ( "statusCode", E.int 400 )
                             ]
                         )
 

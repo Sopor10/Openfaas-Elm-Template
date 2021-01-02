@@ -3,13 +3,10 @@ const { Console } = require("console");
 const { randomBytes } = require("crypto");
 const { Elm } = require("./function/elm-main");
 module.exports = async (event, context) => {
-  const result = {
-    
-    'status':  await run("f1",event.body)
-  }
-
+  const result = await run("f1",event.body);
+  console.log(result);
   return context
-    .status(200)
+    .status(result.statusCode)
     .succeed(result)
 }
 
@@ -31,11 +28,11 @@ const run = async (functionId, input) => {
           console.log(input);
 
           if (v.status === "ok") {
-            resolve({ ok: v.output });
+            resolve({ value: v.output ,"statusCode" : v.statusCode});
           } else if (v.status === "error") {
-            resolve({ error: v.msg });
+            resolve({ value: v.msg, "statusCode" : v.statusCode });
           } else {
-            resolve({ error: "invalid response status" });
+            resolve({ value: "invalid response status", "statusCode" : v.statusCode});
           }
         }
       };
@@ -44,10 +41,10 @@ const run = async (functionId, input) => {
 
       timeout = setTimeout(() => {
         output.unsubscribe(go);
-        resolve({ error: "invalid jobId or time limit exceeded" });
+        resolve({ value: "invalid jobId or time limit exceeded" ,"statusCode" : 504});
       }, 20 * 1000);
     } catch (e) {
-      resolve({ error: "unexpected error" });
+      resolve({ value: "unexpected error","statusCode" :500 });
     }
   });
 

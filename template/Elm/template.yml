@@ -1,4 +1,4 @@
-language: elm
+language: Elm
 fprocess: node index.js
 welcome_message: |
   This template uses elm 0.19.1

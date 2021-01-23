@@ -27,7 +27,7 @@ RUN dotnet restore ./root.csproj
 
 COPY .  .
 
-RUN dotnet publish -c release
+RUN dotnet publish -c release -o published
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
@@ -38,7 +38,8 @@ RUN addgroup --system app \
     && adduser --system --ingroup app app
 
 WORKDIR /home/app/
-COPY --from=builder /home/app/src/bin/release .
+COPY --from=builder /home/app/src/published .
+COPY --from=builder /home/app/src/bin/release/geckodriver .
 RUN chown app:app -R /home/app
 
 USER app

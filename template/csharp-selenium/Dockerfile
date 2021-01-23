@@ -2,7 +2,6 @@ FROM alpine:3.8 as watchdog
 
 RUN apk update
 RUN apk add firefox-esr
-
 RUN apk --no-cache add curl \
     && echo "Pulling watchdog binary from Github." \
     && curl -sSL https://github.com/openfaas-incubator/of-watchdog/releases/download/0.5.1/of-watchdog > /usr/bin/fwatchdog \
@@ -27,7 +26,9 @@ RUN dotnet restore ./root.csproj
 
 COPY .  .
 
-RUN dotnet publish -c release 
+RUN dotnet publish -c release -o published
+RUN cp /home/app/src/bin/release/net5.0/geckodriver /home/app/src/published/
+
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
@@ -38,12 +39,15 @@ RUN addgroup --system app \
     && adduser --system --ingroup app app
 
 WORKDIR /home/app/
-COPY --from=builder /home/app/src/bin/release/net5.0 .
+COPY --from=builder /home/app/src/published .
+
+#Copy gecko driver
+COPY --from=builder /home/app/src/published .
 RUN chown app:app -R /home/app
 
 USER app
 
-ENV fprocess="dotnet .net5.0/publish/root.dll"
+ENV fprocess="dotnet ./root.dll"
 ENV cgi_headers="true"
 ENV mode="http"
 ENV upstream_url="http://localhost:5000"

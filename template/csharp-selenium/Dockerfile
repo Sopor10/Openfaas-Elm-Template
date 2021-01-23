@@ -1,7 +1,5 @@
 FROM alpine:3.8 as watchdog
 
-RUN apk update
-RUN apk add firefox-esr
 RUN apk --no-cache add curl \
     && echo "Pulling watchdog binary from Github." \
     && curl -sSL https://github.com/openfaas-incubator/of-watchdog/releases/download/0.5.1/of-watchdog > /usr/bin/fwatchdog \
@@ -31,6 +29,9 @@ RUN cp /home/app/src/bin/release/net5.0/geckodriver /home/app/src/published/
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
+
+RUN apk update
+RUN apk add firefox-esr
 
 COPY --from=watchdog /usr/bin/fwatchdog  /usr/bin/
 

@@ -43,7 +43,7 @@ RUN chown app:app -R /home/app
 
 USER app
 
-ENV fprocess="dotnet ./root.dll"
+ENV fprocess="dotnet .net5.0/publish/root.dll"
 ENV cgi_headers="true"
 ENV mode="http"
 ENV upstream_url="http://localhost:5000"

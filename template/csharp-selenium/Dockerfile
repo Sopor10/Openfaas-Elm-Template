@@ -28,7 +28,7 @@ RUN dotnet publish -c release -o published
 RUN cp /home/app/src/bin/release/net5.0/geckodriver /home/app/src/published/
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
 
 RUN apk update
 RUN apk add firefox-esr

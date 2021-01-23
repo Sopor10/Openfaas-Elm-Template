@@ -42,8 +42,6 @@ RUN addgroup --system app \
 WORKDIR /home/app/
 COPY --from=builder /home/app/src/published .
 
-#Copy gecko driver
-COPY --from=builder /home/app/src/published .
 RUN chown app:app -R /home/app
 
 USER app

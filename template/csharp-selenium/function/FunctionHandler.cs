@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
 using System.Text.Json;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using PuppeteerSharp;
 
 namespace Function
 {
@@ -11,17 +10,18 @@ namespace Function
     {
         public async Task<(int, string)> Handle(HttpRequest request)
         {
-            var reader = new StreamReader(request.Body);
+            var reader = new StreamReader(request.Body); 
             var input = JsonSerializer.Deserialize<Input>(await reader.ReadToEndAsync());
-
-
-            var firefoxOptions = new FirefoxOptions();
-            firefoxOptions.AddArgument("-headless");
-            using IWebDriver driver = new FirefoxDriver(System.Environment.CurrentDirectory,firefoxOptions);
-
-            driver.Navigate().GoToUrl(input.Url);
-            
-            return (200, driver.PageSource);
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+            {
+                Headless = true,
+                Args = new string[] { "--no-sandbox" }
+            });
+            var page = await browser.NewPageAsync();
+            await page.GoToAsync("http://www.google.com");
+            string outputFile = null;
+            await page.ScreenshotAsync(outputFile);
+            return (200, outputFile);
         }
     }
     public record Input

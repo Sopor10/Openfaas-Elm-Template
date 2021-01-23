@@ -25,13 +25,12 @@ RUN dotnet restore ./root.csproj
 COPY .  .
 
 RUN dotnet publish -c release -o published
-RUN cp /home/app/src/bin/release/net5.0/geckodriver /home/app/src/published/
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
 
-RUN apk update
-RUN apk add firefox-esr
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+
+RUN apt-get update && apt-get install -y xorg openbox libnss3 libasound2
 
 COPY --from=watchdog /usr/bin/fwatchdog  /usr/bin/
 

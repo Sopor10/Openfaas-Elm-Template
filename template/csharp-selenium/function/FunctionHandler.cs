@@ -1,8 +1,12 @@
+using System;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Text.Json;
-using PuppeteerSharp;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
 
 namespace Function
 {
@@ -12,16 +16,25 @@ namespace Function
         {
             var reader = new StreamReader(request.Body); 
             var input = JsonSerializer.Deserialize<Input>(await reader.ReadToEndAsync());
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
-            {
-                Headless = true,
-                Args = new string[] { "--no-sandbox" }
-            });
-            var page = await browser.NewPageAsync();
-            await page.GoToAsync("http://www.google.com");
-            string outputFile = null;
-            await page.ScreenshotAsync(outputFile);
-            return (200, outputFile);
+            var firefoxOptions = new FirefoxOptions();
+            firefoxOptions.AddArgument("-headless");
+            using var driver = new FirefoxDriver(firefoxOptions);
+            driver.Navigate().GoToUrl(input.Url);
+            return (200, driver.PageSource);
+        }
+
+        private string GetGeckoDriverLink()
+        {
+	        var architecture = RuntimeInformation.OSArchitecture;
+
+	        var fileLocation = architecture switch
+	        {
+		        Architecture.X64 => "/home/app/geckodriveramd64",
+		        Architecture.Arm64 => "/home/app/geckodriverard64",
+		        _ => throw new ArgumentOutOfRangeException()
+	        };
+
+	        return fileLocation;
         }
     }
     public record Input

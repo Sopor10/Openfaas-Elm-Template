@@ -4,4 +4,12 @@ namespace Function
 	{
 		public string Data { get; init; }
 	}
+
+	public class InputValidator : AbstractValidator<Input>
+	{
+		public InputValidator()
+		{
+			RuleFor(x => x.Data).NotNull().NotEmpty();
+		}
+	}
 }

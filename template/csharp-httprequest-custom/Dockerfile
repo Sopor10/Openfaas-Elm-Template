@@ -33,7 +33,7 @@ RUN dotnet restore ./root.csproj
 
 COPY .  .
 
-RUN dotnet publish -c release -o published
+RUN dotnet publish root.csproj -c release -o published
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 

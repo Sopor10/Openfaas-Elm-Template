@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Http;
 using System.IO;
@@ -9,6 +8,13 @@ namespace Function
 {
 	public class FunctionHandler
 	{
+		public FunctionHandler(TypedHandler typedHandler)
+		{
+			this.TypedHandler = typedHandler;
+		}
+
+		public TypedHandler TypedHandler { get;  }
+
 		public async Task<(int, string)> Handle(HttpRequest request)
 		{
 			var reader = new StreamReader(request.Body);
@@ -20,14 +26,9 @@ namespace Function
 			{
 				throw new InvalidEnumArgumentException(validationResult.ToString());
 			}
-			var output = await this.Handle(deserialize);
+			var output = await TypedHandler.Handle(deserialize);
 			return (200, JsonSerializer.Serialize(output ));
 		}
 
-		public async Task<Output> Handle(Input input) 
-		{
-			input = input ?? throw new ArgumentNullException();
-			return new Output() {Data = "Your input was: " + input.Data};
-		}
 	}
 }

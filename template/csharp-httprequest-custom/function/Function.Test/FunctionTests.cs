@@ -20,9 +20,9 @@ namespace Function.Test
 			Assert.That(result, Is.EqualTo(new Output(){Data = "Your input was: Test"}));
 		}
 
-		private FunctionHandler CreateTestObject()
+		private TypedHandler CreateTestObject()
 		{
-			return new FunctionHandler();
+			return new TypedHandler();
 		}
 	}
 }

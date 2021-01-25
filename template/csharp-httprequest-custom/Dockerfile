@@ -30,7 +30,7 @@ RUN dotnet restore root.csproj
 
 COPY .  .
 
-RUN dotnet publish root.csproj -c release -o published
+RUN dotnet publish root.csproj -o published
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
@@ -41,7 +41,7 @@ RUN addgroup --system app \
     && adduser --system --ingroup app app
 
 WORKDIR /home/app/
-COPY --from=builder /home/app/src/published .
+COPY --from=builder /home/app/published .
 RUN chown app:app -R /home/app
 
 USER app

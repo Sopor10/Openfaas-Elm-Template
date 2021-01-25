@@ -19,13 +19,8 @@ RUN mkdir -p /home/app/function/Function
 
 WORKDIR /home/app
 
-COPY ./function/Function/Function.csproj  ./function/Function/
-
 COPY root.sln ./
 COPY root.csproj ./
-
-
-
 RUN dotnet restore root.csproj
 
 COPY .  .

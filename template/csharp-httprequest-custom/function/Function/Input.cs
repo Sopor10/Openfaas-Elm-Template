@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace Function
 {
 	public record Input

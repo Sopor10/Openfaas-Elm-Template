@@ -21,6 +21,7 @@ WORKDIR /home/app
 
 COPY root.sln ./
 COPY root.csproj ./
+COPY ./function/Function/Function.csproj  ./function/Function/
 RUN dotnet restore root.csproj
 
 COPY .  .

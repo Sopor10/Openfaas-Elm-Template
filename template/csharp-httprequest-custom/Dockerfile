@@ -7,7 +7,7 @@ RUN apk --no-cache add curl \
     && cp /usr/bin/fwatchdog /home/app \
     && apk del curl --no-cache
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine as builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0 as builder
 
 # Supress collection of data.
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1

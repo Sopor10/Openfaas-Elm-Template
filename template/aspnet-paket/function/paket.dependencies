@@ -1,11 +1,11 @@
 source https://api.nuget.org/v3/index.json
 
-nuget FluentValidation 9.4.0
-nuget Microsoft.AspNetCore.Hosting 2.2.7
-nuget Microsoft.AspNetCore.Http.Abstractions 2.2.0
-nuget Microsoft.AspNetCore.Mvc.Abstractions 2.2.0
-nuget Microsoft.AspNetCore.Mvc.Core 2.2.5
-nuget Microsoft.Extensions.DependencyInjection.Abstractions 2.2.0
-nuget Microsoft.NET.Test.Sdk 16.5.0
-nuget NUnit 3.13.0
-nuget NUnit3TestAdapter 3.16.1
+nuget FluentValidation
+nuget Microsoft.AspNetCore.Hosting
+nuget Microsoft.AspNetCore.Http.Abstractions
+nuget Microsoft.AspNetCore.Mvc.Abstractions
+nuget Microsoft.AspNetCore.Mvc.Core
+nuget Microsoft.Extensions.DependencyInjection.Abstractions
+nuget Microsoft.NET.Test.Sdk
+nuget NUnit
+nuget NUnit3TestAdapter

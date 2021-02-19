@@ -19,14 +19,19 @@ RUN mkdir -p /home/app/function/Function
 WORKDIR /home/app
 
 
-COPY root.sln ./
-COPY root.csproj ./
-COPY ./function/Function/Function.csproj  ./function/Function/
-RUN dotnet restore root.csproj
+#COPY root.sln ./
+#COPY root.csproj ./
 
+
+WORKDIR /home/app
 COPY .  .
 
-RUN dotnet publish root.csproj -o published
+WORKDIR /home/app/function
+RUN dotnet tool restore
+RUN dotnet paket restore 
+
+WORKDIR /home/app
+RUN dotnet publish ./function/Function/Function.csproj -o published
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
@@ -42,7 +47,7 @@ RUN chown app:app -R /home/app
 
 USER app
 
-ENV fprocess="dotnet ./root.dll"
+ENV fprocess="dotnet ./Function.dll"
 ENV cgi_headers="true"
 ENV mode="http"
 ENV upstream_url="http://localhost:5000"

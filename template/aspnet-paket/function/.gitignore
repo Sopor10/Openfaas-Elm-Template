@@ -3,3 +3,4 @@
 **/.nuget/
 **/.dotnet/
 **/.templateengine/
+**/packages

@@ -3,13 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Function
 {
-	public static class Startup
+	public class Startup
 	{
-		//Install your custom dependencies here
-		public static void ConfigureServices(this IServiceCollection services)
+		public static void ConfigureServices(IServiceCollection services)
 		{
-			services.AddTransient<TypedHandler>();
+			services.AddTransient<FunctionHandler>();
 		}
-
 	}
 }

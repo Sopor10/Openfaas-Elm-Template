@@ -1,0 +1,6 @@
+FluentValidation
+Microsoft.AspNetCore.Hosting
+Microsoft.AspNetCore.Http.Abstractions
+Microsoft.AspNetCore.Mvc.Abstractions
+Microsoft.AspNetCore.Mvc.Core
+Microsoft.Extensions.DependencyInjection.Abstractions

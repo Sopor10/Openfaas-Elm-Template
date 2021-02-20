@@ -1,4 +1,4 @@
-FROM alpine:3.8 as watchdog
+FROM alpine:3.13 as watchdog
 
 RUN apk --no-cache add curl \
     && echo "Pulling watchdog binary from Github." \

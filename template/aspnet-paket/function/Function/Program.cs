@@ -16,8 +16,13 @@ WebHost.CreateDefaultBuilder(args)
 		{
 			var handler = e.ServiceProvider.GetRequiredService<FunctionHandler>();
 
-			e.MapPost("/", async c => await c.Response.WriteAsJsonAsync(await handler.Handle(c.Request)));
+			e.MapPost("/", async c =>
+			{
+				var result = await handler.Handle(c.Request);
+				await c.Response.WriteAsJsonAsync(result);
+			});
 		});
 	})
 	.Build()
 	.Run();
+	

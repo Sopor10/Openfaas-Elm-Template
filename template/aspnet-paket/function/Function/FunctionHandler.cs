@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ namespace Function
 		}
 
 
-		public async Task<IActionResult> Handle(HttpRequest request)
+		public async Task<String> Handle(HttpRequest request)
 		{
-			return new OkObjectResult("Hello World");
+			return "Hello World";
 		}
 	}
 }
